@@ -1,0 +1,38 @@
+name: Generate Manifests
+
+on:
+  release:
+    types: [published]
+
+env:
+  MANIFESTS_FILENAME: manifests.yaml
+  KUSTOMIZE_VERSION: 5.8.1
+
+jobs:
+  generate-manifests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Kustomize
+        run: |
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash -s -- ${{ env.KUSTOMIZE_VERSION }}
+          sudo mv kustomize /usr/local/bin/
+
+      - name: Generate manifests
+        run: |
+          kustomize build ./config/default > ${{ env.MANIFESTS_FILENAME }}
+
+      - name: Upload manifests to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./${{ env.MANIFESTS_FILENAME }}
+          asset_name: ${{ env.MANIFESTS_FILENAME }}
+          asset_content_type: application/x-yaml

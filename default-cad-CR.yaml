@@ -1,0 +1,27 @@
+apiVersion: operator.sundew.com/v1alpha1 
+kind: CloudActiveDefense 
+metadata: 
+  labels: 
+    app.kubernetes.io/name: cloud-active-defense
+    app.kubernetes.io/instance: cad-module
+    app.kubernetes.io/part-of: tmpoperator 
+    app.kubernetes.io/managed-by: kustomize 
+    app.kubernetes.io/created-by: tmpoperator 
+  name: cad-module
+  namespace: default
+spec: 
+  domain: c-5fcf4eb.stage.kyma.ondemand.com
+  controlpanelAPI:
+    image: ghcr.io/sap/controlpanel-api:latest
+    deploymentManagerDBPassword: 
+  controlpanelFront:
+    image: ghcr.io/sap/controlpanel-frontend:latest
+  deploymentManager:
+    image: ghcr.io/sap/deployment-manager:latest
+  keycloak:
+    image: ghcr.io/sap/keycloak-controlpanel:latest
+    database:
+      port: 5432
+  database:
+    port: 5432
+
