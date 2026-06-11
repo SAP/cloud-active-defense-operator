@@ -1,9 +1,8 @@
 resources:
 - manager.yaml
-- artifactory-creds.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
-- name: controller
-  newName: cad.common.repositories.cloud.sap/i549577/controller
-  newTag: "2.0"
+- name: cad-controller
+  newName: ghcr.io/sap/cad-controller
+  newTag: "latest"

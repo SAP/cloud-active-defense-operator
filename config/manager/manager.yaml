@@ -57,15 +57,13 @@ spec:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
-      imagePullSecrets:
-        - name: cad-operator-artifactory-creds
       containers:
       - command:
         - /manager
         args:
           - --leader-elect
           - --health-probe-bind-address=:8081
-        image: cad.common.repositories.cloud.sap/i549577/controller:2.0
+        image: ghcr.io/sap/cad-controller:latest
         imagePullPolicy: Always
         name: manager
         ports: []
