@@ -4,7 +4,7 @@
 
 ## About this project
 
-place holder - to be edited later.
+This project is an Operator that can install [Cloud Active Defense](https://github.com/SAP/cloud-active-defense/) into your [Kyma](https://kyma-project.io/) cluster.
 
 ## Requirements and Setup
 
