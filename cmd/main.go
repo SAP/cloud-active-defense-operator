@@ -37,7 +37,6 @@ import (
 
 	istioclientv1 "istio.io/client-go/pkg/apis/security/v1"
 	kymagwv2 "github.com/kyma-project/api-gateway/apis/gateway/v2"
-
 	operatorv1alpha1 "github.com/SAP/cad-operator/api/v1alpha1"
 	"github.com/SAP/cad-operator/internal/controller"
 	// +kubebuilder:scaffold:imports

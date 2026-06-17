@@ -49,7 +49,7 @@ func DefaultInt32(val, def int32) int32 {
 // GetClusterDomain attempts to fetch the Kyma cluster domain from standard locations.
 // It first checks the shoot-info ConfigMap (for Gardener/BTP clusters),
 // then falls back to the provided domain if available.
-func GetClusterDomain(ctx context.Context, client client.Client, providedDomain string) (string, error) {
+func GetClusterDomain(ctx context.Context, k8sClient client.Client, providedDomain string) (string, error) {
 	// If domain is explicitly provided, use it
 	if providedDomain != "" {
 		return providedDomain, nil
@@ -57,7 +57,7 @@ func GetClusterDomain(ctx context.Context, client client.Client, providedDomain 
 
 	// Try to fetch from shoot-info ConfigMap (Gardener/BTP standard location)
 	cm := &corev1.ConfigMap{}
-	if err := client.Get(ctx, types.NamespacedName{
+	if err := k8sClient.Get(ctx, types.NamespacedName{
 		Namespace: "kube-system",
 		Name:      "shoot-info",
 	}, cm); err == nil {
@@ -96,7 +96,7 @@ func GenerateUsername(prefix string) (string, error) {
 // IsUsernameField checks if a secret key represents a username field.
 func IsUsernameField(key string) bool {
 	// Check for common username field patterns
-	return key == "POSTGRES_USER" || 
-		   key == "KC_BOOTSTRAP_ADMIN_USERNAME" ||
-		   key == "DEPLOYMENT_MANAGER_USER"
+	return key == "POSTGRES_USER" ||
+		key == "KC_BOOTSTRAP_ADMIN_USERNAME" ||
+		key == "DEPLOYMENT_MANAGER_USER"
 }

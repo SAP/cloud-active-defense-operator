@@ -442,7 +442,7 @@ func (r *CloudActiveDefenseReconciler) reconcileDeployments(ctx context.Context,
 			return nil
 		})
 		if err != nil {
-			return fmt.Errorf("Deployment %s: %w", d.name, err)
+			return fmt.Errorf("deployment %s: %w", d.name, err)
 		}
 	}
 	return nil
@@ -480,7 +480,7 @@ func (r *CloudActiveDefenseReconciler) reconcileServices(ctx context.Context, ca
 			return nil
 		})
 		if err != nil {
-			return fmt.Errorf("Service %s: %w", s.name, err)
+			return fmt.Errorf("service %s: %w", s.name, err)
 		}
 	}
 	return nil

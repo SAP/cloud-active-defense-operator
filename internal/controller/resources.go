@@ -34,6 +34,10 @@ import (
 	"github.com/SAP/cad-operator/internal/util"
 )
 
+const (
+	kymaGateway = "kyma-system/kyma-gateway"
+)
+
 var replicas int32 = 1
 
 // --- Controlpanel DB ---
@@ -526,7 +530,7 @@ func controlpanelAPIAPIRuleSpec(cad *operatorv1alpha1.CloudActiveDefense) kymagw
 	noAuth := true
 	allowCredentials := true
 	host := kymagwv2.Host("controlpanel-api")
-	gateway := "kyma-system/kyma-gateway"
+	gateway := kymaGateway
 	svcName := "controlpanel-api-service"
 	svcPort := uint32(80)
 	frontURL := fmt.Sprintf("https://controlpanel-front.%s", cad.Spec.Domain)
@@ -555,7 +559,7 @@ func controlpanelAPIAPIRuleSpec(cad *operatorv1alpha1.CloudActiveDefense) kymagw
 func controlpanelFrontAPIRuleSpec(_ *operatorv1alpha1.CloudActiveDefense) kymagwv2.APIRuleSpec {
 	noAuth := true
 	host := kymagwv2.Host("controlpanel-front")
-	gateway := "kyma-system/kyma-gateway"
+	gateway := kymaGateway
 	svcName := "controlpanel-front-service"
 	svcPort := uint32(80)
 	return kymagwv2.APIRuleSpec{
@@ -577,7 +581,7 @@ func keycloakAPIRuleSpec(cad *operatorv1alpha1.CloudActiveDefense) kymagwv2.APIR
 	noAuth := true
 	allowCredentials := true
 	host := kymagwv2.Host("keycloak")
-	gateway := "kyma-system/kyma-gateway"
+	gateway := kymaGateway
 	svcName := "keycloak-service"
 	svcPort := uint32(80)
 	frontURL := fmt.Sprintf("https://controlpanel-front.%s", cad.Spec.Domain)
