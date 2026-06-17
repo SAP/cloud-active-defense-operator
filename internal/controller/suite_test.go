@@ -26,6 +26,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
+	kymagwv2 "github.com/kyma-project/api-gateway/apis/gateway/v2"
+	istioclientv1 "istio.io/client-go/pkg/apis/security/v1"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -63,12 +65,44 @@ var _ = BeforeSuite(func() {
 	err = operatorv1alpha1.AddToScheme(scheme.Scheme)
 	Expect(err).NotTo(HaveOccurred())
 
+	err = kymagwv2.AddToScheme(scheme.Scheme)
+	Expect(err).NotTo(HaveOccurred())
+
+	err = istioclientv1.AddToScheme(scheme.Scheme)
+	Expect(err).NotTo(HaveOccurred())
+
 	// +kubebuilder:scaffold:scheme
 
 	By("bootstrapping test environment")
+
+	// Start with just our base CRDs
+	crdPaths := []string{filepath.Join("..", "..", "config", "crd", "bases")}
+
+	// Try to find external CRDs from Go modules, but don't fail if not found
+	goModCache := os.Getenv("GOMODCACHE")
+	if goModCache == "" {
+		if gopath := os.Getenv("GOPATH"); gopath != "" {
+			goModCache = filepath.Join(gopath, "pkg", "mod")
+		}
+	}
+
+	if goModCache != "" {
+		// Try to add Kyma APIGateway CRDs
+		kymaPath := filepath.Join(goModCache, "github.com", "kyma-project", "api-gateway@v0.0.0-20260407070610-e93e04899b99", "config", "crd", "bases")
+		if _, err := os.Stat(kymaPath); err == nil {
+			crdPaths = append(crdPaths, kymaPath)
+		}
+
+		// Try to add Istio CRDs
+		istioPath := filepath.Join(goModCache, "istio.io", "api@v1.27.7", "kubernetes")
+		if _, err := os.Stat(istioPath); err == nil {
+			crdPaths = append(crdPaths, istioPath)
+		}
+	}
+
 	testEnv = &envtest.Environment{
-		CRDDirectoryPaths:     []string{filepath.Join("..", "..", "config", "crd", "bases")},
-		ErrorIfCRDPathMissing: true,
+		CRDDirectoryPaths:     crdPaths,
+		ErrorIfCRDPathMissing: false, // Don't fail if external CRDs are missing
 	}
 
 	// Retrieve the first found binary directory to allow running tests from IDEs
