@@ -80,7 +80,7 @@ var _ = Describe("CloudActiveDefense Controller", func() {
 
 			// Note: Reconcile might not fully complete if external CRDs (Kyma APIRule, Istio AuthorizationPolicy)
 			// are not available, but basic operations should work
-			controllerReconciler.Reconcile(ctx, reconcile.Request{
+			_, _ = controllerReconciler.Reconcile(ctx, reconcile.Request{
 				NamespacedName: typeNamespacedName,
 			})
 
