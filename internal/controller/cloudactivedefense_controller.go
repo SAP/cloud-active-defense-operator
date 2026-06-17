@@ -267,7 +267,7 @@ func (r *CloudActiveDefenseReconciler) ensureSecret(ctx context.Context, cad *op
 				// Not provided and not yet generated: create a random value
 				var generatedValue string
 				var err error
-				
+
 				// Check if this is a username field
 				if util.IsUsernameField(k) {
 					generatedValue, err = util.GenerateUsername("")
@@ -275,7 +275,7 @@ func (r *CloudActiveDefenseReconciler) ensureSecret(ctx context.Context, cad *op
 					// Generate password
 					generatedValue, err = util.GeneratePassword(32)
 				}
-				
+
 				if err != nil {
 					return fmt.Errorf("generating value for %s: %w", k, err)
 				}

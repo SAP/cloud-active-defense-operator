@@ -35,10 +35,10 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	istioclientv1 "istio.io/client-go/pkg/apis/security/v1"
-	kymagwv2 "github.com/kyma-project/api-gateway/apis/gateway/v2"
 	operatorv1alpha1 "github.com/SAP/cad-operator/api/v1alpha1"
 	"github.com/SAP/cad-operator/internal/controller"
+	kymagwv2 "github.com/kyma-project/api-gateway/apis/gateway/v2"
+	istioclientv1 "istio.io/client-go/pkg/apis/security/v1"
 	// +kubebuilder:scaffold:imports
 )
 
