@@ -9,8 +9,10 @@ metadata:
     app.kubernetes.io/created-by: tmpoperator 
   name: cad-module
   namespace: default
-spec: 
-  domain: c-5fcf4eb.stage.kyma.ondemand.com
+spec:
+  # domain is now auto-detected from the Kyma cluster
+  # Uncomment the following line to override with a custom domain:
+  # domain: my-custom.domain.com
   controlpanelAPI:
     image: ghcr.io/sap/controlpanel-api:latest
     deploymentManagerDBPassword: 

@@ -1,9 +1,14 @@
 package util
 
 import (
+	"context"
 	"crypto/rand"
 	"fmt"
 	"math/big"
+
+	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	operatorv1alpha1 "github.com/SAP/cad-operator/api/v1alpha1"
 )
@@ -39,6 +44,30 @@ func DefaultInt32(val, def int32) int32 {
 		return val
 	}
 	return def
+}
+
+// GetClusterDomain attempts to fetch the Kyma cluster domain from standard locations.
+// It first checks the shoot-info ConfigMap (for Gardener/BTP clusters),
+// then falls back to the provided domain if available.
+func GetClusterDomain(ctx context.Context, client client.Client, providedDomain string) (string, error) {
+	// If domain is explicitly provided, use it
+	if providedDomain != "" {
+		return providedDomain, nil
+	}
+
+	// Try to fetch from shoot-info ConfigMap (Gardener/BTP standard location)
+	cm := &corev1.ConfigMap{}
+	if err := client.Get(ctx, types.NamespacedName{
+		Namespace: "kube-system",
+		Name:      "shoot-info",
+	}, cm); err == nil {
+		if domain, ok := cm.Data["domain"]; ok && domain != "" {
+			return domain, nil
+		}
+	}
+
+	// Could not determine domain
+	return "", fmt.Errorf("unable to determine cluster domain: please specify 'domain' in the CloudActiveDefense spec")
 }
 
 func GeneratePassword(length int) (string, error) {

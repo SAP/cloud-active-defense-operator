@@ -93,8 +93,7 @@ spec:
               domain:
                 description: |-
                   domain is the base domain for external access (e.g. "c-28e44bf.kyma.ondemand.com").
-                  Used to construct external URLs for services.
-                minLength: 1
+                  If not specified, the operator will attempt to auto-detect it from the Kyma cluster configuration.
                 type: string
               keycloak:
                 description: keycloak configures the keycloak authentication component
@@ -130,8 +129,6 @@ spec:
                     description: image is the container image for Keycloak
                     type: string
                 type: object
-            required:
-            - domain
             type: object
           status:
             description: status defines the observed state of CloudActiveDefense
@@ -205,6 +202,11 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              resolvedDomain:
+                description: |-
+                  resolvedDomain is the actual domain being used by the operator.
+                  This will be either the user-provided domain or the auto-detected cluster domain.
+                type: string
             type: object
         required:
         - spec

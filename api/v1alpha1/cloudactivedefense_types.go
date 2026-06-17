@@ -23,10 +23,9 @@ import (
 // CloudActiveDefenseSpec defines the desired state of CloudActiveDefense.
 type CloudActiveDefenseSpec struct {
 	// domain is the base domain for external access (e.g. "c-28e44bf.kyma.ondemand.com").
-	// Used to construct external URLs for services.
-	// +kubebuilder:validation:Required
-	// +kubebuilder:validation:MinLength=1
-	Domain string `json:"domain"`
+	// If not specified, the operator will attempt to auto-detect it from the Kyma cluster configuration.
+	// +optional
+	Domain string `json:"domain,omitempty"`
 
 	// controlpanelAPI configures the controlpanel API component
 	// +optional
@@ -137,6 +136,11 @@ type CloudActiveDefenseStatus struct {
 
 	// For Kubernetes API conventions, see:
 	// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
+
+	// resolvedDomain is the actual domain being used by the operator.
+	// This will be either the user-provided domain or the auto-detected cluster domain.
+	// +optional
+	ResolvedDomain string `json:"resolvedDomain,omitempty"`
 
 	// conditions represent the current state of the CloudActiveDefense resource.
 	// Each condition has a unique type and reflects the status of a specific aspect of the resource.
