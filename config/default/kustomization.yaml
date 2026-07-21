@@ -41,6 +41,11 @@ patches:
   target:
     kind: Deployment
 
+images:
+- name: controller
+  newName: ghcr.io/sap/cad-controller
+  newTag: latest
+
 # Uncomment the patches line if you enable Metrics and CertManager
 # [METRICS-WITH-CERTS] To enable metrics protected with certManager, uncomment the following line.
 # This patch will protect the metrics with certManager self-signed certs.
