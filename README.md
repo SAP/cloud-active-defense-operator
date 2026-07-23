@@ -16,6 +16,10 @@ If you want to rebuild the operator and generate config files
 - Kubectl kustomize
 - Docker
 
+### Setup
+- To install the operator please download the provided `manifests` file in the latest release and use `kubectl apply -f ...` with this file
+- To install Cloud Active Defense using this operator you can use the `default-cad-CR.yaml` by executing this command `kubectl apply -f ./default-cad-CR.yaml` (You can also make you own Cloud Active Defense CR or change the values of the default one)
+
 ## Documentation
 More detailled documentation is available in `/docs`
 
