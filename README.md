@@ -8,7 +8,16 @@ This project is an Operator that can install [Cloud Active Defense](https://gith
 
 ## Requirements and Setup
 
-*Insert a short description what is required to get your project running...*
+### Kyma install
+- A running kyma cluster
+- Kubectl
+### Optional requirements
+If you want to rebuild the operator and generate config files
+- Kubectl kustomize
+- Docker
+
+## Documentation
+More detailled documentation is available in `/docs`
 
 ## Support, Feedback, Contributing
 
